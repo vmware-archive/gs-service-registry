@@ -1,0 +1,1 @@
+# gs-service-registry
