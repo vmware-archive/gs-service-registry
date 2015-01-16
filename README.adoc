@@ -1,1 +1,81 @@
 This guide walks you through the process of registering and consuming a simple "hello world" REST service with Eureka on Pivotal CloudFoundry.
+
+== What you'll build
+
+You'll deploy the simple "hello world" REST service created at http://spring.io/guides/gs/rest-service/ to Pivotal CloudFoundry, register it to a Eureka service instance, and write a client that discovers and consumes the service.
+
+== What you'll need
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
+
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
+
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-maven.adoc[]
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
+
+[[initial]]
+== Enable the discovery client
+
+STEP 1: Add spring-cloud-starter-eureka and spring-cloud-pivotal-connector as build dependencies.
+
+`build.gradle`
+[source,groovy]
+----
+include::complete/greeting-service/build.gradle[lines=32..33]
+----
+
+STEP 2: Annotate DemoApplication with `@EnableDiscoveryClient`
+
+`src/main/java/hello/DemoApplication.java`
+[source,java]
+----
+include::complete/greeting-service/src/main/java/hello/DemoApplication.java[]
+----
+
+STEP 3: Set `spring.application.name` property in application.yml so that the service will be registered in Eureka with a good name.
+
+`src/main/resources/application.yml`
+[source,java]
+----
+include::complete/greeting-service/src/main/resources/application.yml[]
+----
+
+STEP 3.5: Also had to (for now) set eureka.instance properties.
+
+== Deploy the service to CloudFoundry
+
+STEP 4: Build it:
+
+```sh
+./gradlew build
+```
+
+STEP 5: Push it to CloudFoundry
+
+```sh
+cf push greetingsvc -p build/lib/gs-rest-service-0.1.0.jar
+```
+
+STEP 6: Create Eureka service instance.
+
+```sh
+cf create-service p-eureka standard eureka
+```
+
+STEP 7: Bind the Eureka service to the greeting service app and restage so that the environment variables will take effect.
+
+```sh
+cf bind-service greetingsvc eureka
+cf restage greetingsvc
+```
+
+STEP 8: Verify that the service is registered via the Eureka dashboard.
+
+== Discover and consume the service
+
+TODO
