@@ -1,0 +1,1 @@
+This guide walks you through the process of registering and consuming a simple "hello world" REST service with Eureka on Pivotal CloudFoundry.
