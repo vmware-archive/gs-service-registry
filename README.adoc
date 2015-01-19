@@ -53,7 +53,10 @@ By default, the service will be registered in Eureka as "bootstrap". But since t
 include::complete/greeting-service/src/main/resources/application.yml[]
 ----
 
-NOTE: For now you also must set the `eureka.instance.*` properties shown here so that the "hello world" service's URL will be correct in the Eureka registration. This requirement should go away in future versions of the Spring Cloud Pivotal connector.
+[NOTE]
+====
+For now you must also set the `eureka.instance.*` properties shown here so that the "hello world" service's URL will be correct in the Eureka registration. This requirement should go away in future versions of the Spring Cloud Pivotal connector.
+====
 
 That's all of the changes necessary to enable the "hello world" service for service discovery in Eureka. Next you'll deploy the service to Pivotal CloudFoundry and bind it to the Eureka service.
 
@@ -94,4 +97,56 @@ At this point you have a simple "hello world" REST service deployed to CloudFoun
 
 == Discover and consume the service
 
-TODO
+For the client of the "hello world" REST service, you'll build another REST service that discovers the "hello world" service via a bound Eureka service and consumes the /greeting endpoint.
+
+The client service has the same `Greeting` resource representation class as the "hello world" service itself. The only key difference is that the constructor is annotated with `@JsonCreator` and its arguments with `@JsonProperty` so that it can be created from the results of invoking the "hello world" service:
+
+`src/main/java/hello/Greeting.java`
+[source,java]
+----
+include::complete/greeting-client/src/main/java/hello/Greeting.java[]
+----
+
+The client's controller handles a GET request for "/hello" by making a GET request for the "hello world" service's "/greeting" endpoint and binding the result to a `Greeting` object. It then returns the `content` property in the response:
+
+`src/main/java/hello/GreetingClientController.java`
+[source,java]
+----
+include::complete/greeting-client/src/main/java/hello/GreetingClientController.java[]
+----
+
+`GreetingClientController` is injected with a `RestTemplate` via the constructor. It uses the injected `RestTemplate` to consume the "hello world" service. What's significant to notice is that the URL given to `getForObject()` has a host name of "GreetingService"--the name that the "hello world" service is registered as in Eureka. In this way, the client doesn't need to know the actual URL of the "hello world" service and only references it by the name it is registered as in Eureka.
+
+The client application also includes a bootstrap class named `DemoApplication` that is identical to the same class in the "hello world" service application:
+
+`src/main/java/hello/DemoApplication.java`
+[source,java]
+----
+include::complete/greeting-client/src/main/java/hello/DemoApplication.java[]
+----
+
+== Deploy the client to CloudFoundry
+
+First, build the client application:
+
+```sh
+gradle build
+```
+
+Then push the client application to CloudFoundry:
+
+```sh
+cf push greetingclient -p build/lib/gs-rest-client-0.1.0.jar
+```
+
+Here, the name of the application is "greetingclient". As with the service application, you can choose any application name you want.
+
+Next, bind the Eureka service instance created earlier to the client application and restage the application to pick up the environment variables pertaining to the binding:
+
+```sh
+cf bind-service greetingclient eureka
+cf restage greetingclient
+```
+
+Now you should be able to test out the client application by visiting http://greetingclient.lion.wild.cf-app.com/hello. When you do, it should respond with "Hello, World!", the content of the `Greeting` served by the "hello world" service.
+
