@@ -150,3 +150,7 @@ cf restage greetingclient
 
 Now you should be able to test out the client application by visiting http://greetingclient.lion.wild.cf-app.com/hello. When you do, it should respond with "Hello, World!", the content of the `Greeting` served by the "hello world" service.
 
+== Summary
+
+Congratulations! You have just registered a REST service with a Eureka server in CloudFoundry and written a client application that discovers and consumes that service.
+
