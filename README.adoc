@@ -21,6 +21,10 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 [[initial]]
 == Enable the discovery client
 
+Now that you've setup the project and build system, you can enable the "hello world" REST service for service discovery.
+
+The first thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
+
 STEP 1: Add spring-cloud-starter-eureka and spring-cloud-pivotal-connector as build dependencies.
 
 `build.gradle`
@@ -29,7 +33,9 @@ STEP 1: Add spring-cloud-starter-eureka and spring-cloud-pivotal-connector as bu
 include::complete/greeting-service/build.gradle[lines=32..33]
 ----
 
-STEP 2: Annotate DemoApplication with `@EnableDiscoveryClient`
+The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in CloudFoundry.
+
+Next, you'll need to enable the discovery client by annotating `DemoApplication` with `@EnableDiscoveryClient`.
 
 `src/main/java/hello/DemoApplication.java`
 [source,java]
@@ -37,7 +43,9 @@ STEP 2: Annotate DemoApplication with `@EnableDiscoveryClient`
 include::complete/greeting-service/src/main/java/hello/DemoApplication.java[]
 ----
 
-STEP 3: Set `spring.application.name` property in application.yml so that the service will be registered in Eureka with a good name.
+The `@EnableDiscoveryClient` annotation enables a Eureka discovery client that will register the "hello world" REST service with the bound Eureka service so that other applications can discover and consume it. 
+
+By default, the service will be registered in Eureka as "bootstrap". But since this name is too generic to be of any practical use, you'll want to set the `spring.application.name` property so that the service will be registered with a meaningful name. You can do that by creating an `application.yml` file with the following entries:
 
 `src/main/resources/application.yml`
 [source,java]
@@ -45,36 +53,44 @@ STEP 3: Set `spring.application.name` property in application.yml so that the se
 include::complete/greeting-service/src/main/resources/application.yml[]
 ----
 
-STEP 3.5: Also had to (for now) set eureka.instance properties.
+NOTE: For now you also must set the `eureka.instance.*` properties shown here so that the "hello world" service's URL will be correct in the Eureka registration. This requirement should go away in future versions of the Spring Cloud Pivotal connector.
+
+That's all of the changes necessary to enable the "hello world" service for service discovery in Eureka. Next you'll deploy the service to Pivotal CloudFoundry and bind it to the Eureka service.
 
 == Deploy the service to CloudFoundry
 
-STEP 4: Build it:
+Before you can deploy the service, you'll need to build it:
 
 ```sh
 ./gradlew build
 ```
 
-STEP 5: Push it to CloudFoundry
+Once the application has been built, you can deploy it to CloudFoundry:
 
 ```sh
 cf push greetingsvc -p build/lib/gs-rest-service-0.1.0.jar
 ```
 
-STEP 6: Create Eureka service instance.
+Here the application is given the name "greetingsvc" in CloudFoundry. You can name the application whatever you want, but you'll need to remember this name so that you can bind it to the Eureka service.
+
+Next you'll create an instance of the Eureka service:
 
 ```sh
 cf create-service p-eureka standard eureka
 ```
 
-STEP 7: Bind the Eureka service to the greeting service app and restage so that the environment variables will take effect.
+The Eureka service is known as "p-eureka" in the service marketplace. It only offers a single service plan named "standard". And the name of the instance being created is "eureka".
+
+Now you can bind the Eureka service instance to the application:
 
 ```sh
 cf bind-service greetingsvc eureka
 cf restage greetingsvc
 ```
 
-STEP 8: Verify that the service is registered via the Eureka dashboard.
+Note that it's important to restage the application after binding the service so that the environment variables pertaining to the service binding are reflected in the application.
+
+At this point you have a simple "hello world" REST service deployed to CloudFoundry and bound to a Eureka service discovery instance. The REST service is enabled with a discovery client so that it will automatically register itself to the Eureka service. It is now eligible for discovery and consumption. Therefore, the next thing you'll do is create an application that discovers and consumes the "hello world" service.
 
 == Discover and consume the service
 
