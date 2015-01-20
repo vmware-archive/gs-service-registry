@@ -8,15 +8,7 @@ You'll deploy the simple "hello world" REST service created at http://spring.io/
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
 
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
-
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-maven.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
+ * An account, organization, and space on Pivotal CloudFoundry.
 
 [[initial]]
 == Enable the discovery client
@@ -24,8 +16,6 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 Now that you've setup the project and build system, you can enable the "hello world" REST service for service discovery.
 
 The first thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
-
-STEP 1: Add spring-cloud-starter-eureka and spring-cloud-pivotal-connector as build dependencies.
 
 `build.gradle`
 [source,groovy]
