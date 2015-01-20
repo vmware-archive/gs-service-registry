@@ -7,8 +7,7 @@ You'll deploy the simple "hello world" REST service created at http://spring.io/
 == What you'll need
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
-
- * An account, organization, and space on Pivotal CloudFoundry.
+ - An account, organization, and space on Pivotal CloudFoundry to deploy the services.
 
 [[initial]]
 == Enable the discovery client
