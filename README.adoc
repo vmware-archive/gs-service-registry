@@ -7,12 +7,12 @@ You'll deploy the simple "hello world" REST service created at http://spring.io/
 == What you'll need
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
- - An account, organization, and space on Pivotal CloudFoundry to deploy the services.
+ - An account, organization, and space on Pivotal CloudFoundry where you can deploy the services.
 
 [[initial]]
 == Enable the discovery client
 
-Now that you've setup the project and build system, you can enable the "hello world" REST service for service discovery.
+Starting with the "hello world" REST service from http://spring.io/guides/gs/rest-service/, you'll start by enabling the service for service discovery.
 
 The first thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
 
@@ -68,15 +68,15 @@ Here the application is given the name "greetingsvc" in CloudFoundry. You can na
 Next you'll create an instance of the Eureka service:
 
 ```sh
-cf create-service p-eureka standard eureka
+cf create-service p-service-registry standard registry
 ```
 
-The Eureka service is known as "p-eureka" in the service marketplace. It only offers a single service plan named "standard". And the name of the instance being created is "eureka".
+The Eureka service is known as "p-service-registry" in the service marketplace. It only offers a single service plan named "standard". And the name of the instance being created is "registry".
 
 Now you can bind the Eureka service instance to the application:
 
 ```sh
-cf bind-service greetingsvc eureka
+cf bind-service greetingsvc registry
 cf restage greetingsvc
 ```
 
@@ -114,6 +114,17 @@ The client application also includes a bootstrap class named `DemoApplication` t
 include::complete/greeting-client/src/main/java/hello/DemoApplication.java[]
 ----
 
+Finally, you'll need a build file with the required dependencies:
+
+`build.gradle`
+[source,groovy]
+----
+include::complete/greeting-client/build.gradle[lines=31..34]
+----
+
+
+
+
 == Deploy the client to CloudFoundry
 
 First, build the client application:
@@ -133,7 +144,7 @@ Here, the name of the application is "greetingclient". As with the service appli
 Next, bind the Eureka service instance created earlier to the client application and restage the application to pick up the environment variables pertaining to the binding:
 
 ```sh
-cf bind-service greetingclient eureka
+cf bind-service greetingclient registry
 cf restage greetingclient
 ```
 
