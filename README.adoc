@@ -1,3 +1,10 @@
+---
+tags: []
+---
+:toc:
+:icons: font
+:source-highlighter: prettify
+:project_id: gs-service-registry
 This guide walks you through the process of registering and consuming a simple "hello world" REST service with Eureka on Pivotal CloudFoundry.
 
 == What you'll build
@@ -6,8 +13,7 @@ You'll deploy the simple "hello world" REST service created at http://spring.io/
 
 == What you'll need
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
- - An account, organization, and space on Pivotal CloudFoundry where you can deploy the services.
+include::https://raw.githubusercontent.com/pcf-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
 
 [[initial]]
 == Enable the discovery client
@@ -32,7 +38,7 @@ Next, you'll need to enable the discovery client by annotating `DemoApplication`
 include::complete/greeting-service/src/main/java/hello/DemoApplication.java[]
 ----
 
-The `@EnableDiscoveryClient` annotation enables a Eureka discovery client that will register the "hello world" REST service with the bound Eureka service so that other applications can discover and consume it. 
+The `@EnableDiscoveryClient` annotation enables a Eureka discovery client that will register the "hello world" REST service with the bound Eureka service so that other applications can discover and consume it.
 
 By default, the service will be registered in Eureka as "bootstrap". But since this name is too generic to be of any practical use, you'll want to set the `spring.application.name` property so that the service will be registered with a meaningful name. You can do that by creating an `application.yml` file with the following entries:
 
@@ -153,4 +159,3 @@ Now you should be able to test out the client application by visiting http://gre
 == Summary
 
 Congratulations! You have just registered a REST service with a Eureka server in CloudFoundry and written a client application that discovers and consumes that service.
-
