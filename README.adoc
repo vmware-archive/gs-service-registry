@@ -9,7 +9,7 @@ This guide walks you through the process of registering and consuming a simple "
 
 == What you'll build
 
-You'll deploy the simple "hello world" REST service created at http://spring.io/guides/gs/rest-service/ to Pivotal CloudFoundry, register it to a Eureka service instance, and write a client that discovers and consumes the service.
+You'll deploy the simple "hello world" REST service created at http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service] to Pivotal CloudFoundry, register it to a Eureka service instance, and then write a client that discovers and consumes the service.
 
 == What you'll need
 
@@ -18,14 +18,14 @@ include::https://raw.githubusercontent.com/pcf-guides/getting-started-macros/mas
 [[initial]]
 == Enable the discovery client
 
-Starting with the "hello world" REST service from http://spring.io/guides/gs/rest-service/, you'll start by enabling the service for service discovery.
+Starting with the "hello world" REST service from http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service], you'll start by enabling the service for service discovery.
 
 The first thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
 
-`build.gradle`
-[source,groovy]
+`pom.xml`
+[source,xml]
 ----
-include::complete/greeting-service/build.gradle[lines=32..33]
+include::complete/greeting-service/pom.xml[lines=27..46]
 ----
 
 The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in CloudFoundry.
@@ -60,24 +60,24 @@ That's all of the changes necessary to enable the "hello world" service for serv
 Before you can deploy the service, you'll need to build it:
 
 ```sh
-./gradlew build
+mvn package
 ```
 
-Once the application has been built, you can deploy it to CloudFoundry:
+Once the application has been built, you can deploy it to CloudFoundry using the CloudFoundry command line interface (cf CLI):
 
 ```sh
-cf push greetingsvc -p build/lib/gs-rest-service-0.1.0.jar
+cf push greetingsvc -p target/gs-rest-service-0.1.0.jar --random-route
 ```
 
-Here the application is given the name "greetingsvc" in CloudFoundry. You can name the application whatever you want, but you'll need to remember this name so that you can bind it to the Eureka service.
+Here the application is given the name "greetingsvc" in CloudFoundry. You are welcome to name it whatever you wish, but remember the name, because you'll need it when you bind the application to the Eureka service.
 
-Next you'll create an instance of the Eureka service:
+By default, the domain name for the application is determined by the application name. By using `--random-route`, you're asking CloudFoundry to assign a random route. This will prevent domain name collisions with others who are working through this guide.
+
+Next you'll create an instance of the Eureka service. The Eureka service is known as "p-service-registry" in the service marketplace and only offers a single service plan named "standard". Using the cf CLI, create an instance of the service named "registry":
 
 ```sh
 cf create-service p-service-registry standard registry
 ```
-
-The Eureka service is known as "p-service-registry" in the service marketplace. It only offers a single service plan named "standard". And the name of the instance being created is "registry".
 
 Now you can bind the Eureka service instance to the application:
 
@@ -122,12 +122,11 @@ include::complete/greeting-client/src/main/java/hello/DemoApplication.java[]
 
 Finally, you'll need a build file with the required dependencies:
 
-`build.gradle`
-[source,groovy]
+`pom.xml`
+[source,xml]
 ----
-include::complete/greeting-client/build.gradle[lines=31..34]
+include::complete/greeting-client/pom.xml[lines=27..46]
 ----
-
 
 
 
@@ -136,16 +135,24 @@ include::complete/greeting-client/build.gradle[lines=31..34]
 First, build the client application:
 
 ```sh
-gradle build
+mvn package
 ```
 
 Then push the client application to CloudFoundry:
 
 ```sh
-cf push greetingclient -p build/lib/gs-rest-client-0.1.0.jar
+cf push greetingclient -p target/gs-rest-client-0.1.0.jar --random-route
 ```
 
 Here, the name of the application is "greetingclient". As with the service application, you can choose any application name you want.
+
+Again, the `--random-route` parameter tells CloudFoundry to generate a random domain route for your application. For the client application, you'll want to take note of the route it creates. Look for a line in the cf CLI output that looks like this:
+
+```
+Binding greetingclient-envious-intima.lion.wild.cf-app.com to greetingclient...
+```
+
+In this case, the application is bound to greetingclient-envious-intima.lion.wild.cf-app.com. You'll use this domain to make a request to the client later in this guide.
 
 Next, bind the Eureka service instance created earlier to the client application and restage the application to pick up the environment variables pertaining to the binding:
 
@@ -154,7 +161,13 @@ cf bind-service greetingclient registry
 cf restage greetingclient
 ```
 
-Now you should be able to test out the client application by visiting http://greetingclient.lion.wild.cf-app.com/hello. When you do, it should respond with "Hello, World!", the content of the `Greeting` served by the "hello world" service.
+Now you should be able to test out the client application by visiting the path "/hello" at the domain that the application is bound to. Given the domain route from above:
+
+```sh
+curl http://greetingclient-envious-intima.lion.wild.cf-app.com/hello
+```
+
+The response should be "Hello, World!".
 
 == Summary
 

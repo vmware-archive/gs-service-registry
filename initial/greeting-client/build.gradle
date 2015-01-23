@@ -29,12 +29,6 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.cloud:spring-cloud-starter-eureka:1.0.0.RC1") {
-        exclude group: 'com.netflix.ribbon', module: 'ribbon-httpclient'
-    }
-    compile("com.netflix.ribbon:ribbon-httpclient:2.0-RC13")
-    compile("org.springframework.cloud:spring-cloud-pivotal-connector:1.0.0.BUILD-SNAPSHOT")
-    testCompile("junit:junit")
 }
 
 task wrapper(type: Wrapper) {
