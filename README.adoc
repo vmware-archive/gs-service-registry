@@ -5,11 +5,11 @@ tags: []
 :icons: font
 :source-highlighter: prettify
 :project_id: gs-service-registry
-This guide walks you through the process of registering and consuming a simple "hello world" REST service with Eureka on Pivotal CloudFoundry.
+This guide walks you through the process of registering and consuming a simple "hello world" REST service with Eureka on Pivotal Cloud Foundry.
 
 == What you'll build
 
-You'll deploy the simple "hello world" REST service created at http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service] to Pivotal CloudFoundry, register it to a Eureka service instance, and then write a client that discovers and consumes the service.
+You'll deploy the simple "hello world" REST service created at http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service] to Pivotal Cloud Foundry, register it to a Eureka service instance, and then write a client that discovers and consumes the service.
 
 == What you'll need
 
@@ -36,7 +36,7 @@ The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cl
 include::complete/greeting-service/pom.xml[lines=27..46]
 ----
 
-The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in CloudFoundry.
+The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in Cloud Foundry.
 
 Next, you'll need to enable the discovery client by annotating `DemoApplication` with `@EnableDiscoveryClient`.
 
@@ -61,9 +61,9 @@ include::complete/greeting-service/src/main/resources/application.yml[]
 For now you must also set the `eureka.instance.*` properties shown here so that the "hello world" service's URL will be correct in the Eureka registration. This requirement should go away in future versions of the Spring Cloud Pivotal connector.
 ====
 
-That's all of the changes necessary to enable the "hello world" service for service discovery in Eureka. Next you'll deploy the service to Pivotal CloudFoundry and bind it to the Eureka service.
+That's all of the changes necessary to enable the "hello world" service for service discovery in Eureka. Next you'll deploy the service to Pivotal Cloud Foundry and bind it to the Eureka service.
 
-== Deploy the service to CloudFoundry
+== Deploy the service to Cloud Foundry
 
 Before you can deploy the service, you'll need to build it:
 
@@ -71,15 +71,15 @@ Before you can deploy the service, you'll need to build it:
 mvn package
 ```
 
-Once the application has been built, you can deploy it to CloudFoundry using the CloudFoundry command line interface (cf CLI):
+Once the application has been built, you can deploy it to Cloud Foundry using the Cloud Foundry command line interface (cf CLI):
 
 ```sh
 cf push greetingsvc -p target/gs-rest-service-0.1.0.jar --random-route
 ```
 
-Here the application is given the name "greetingsvc" in CloudFoundry. You are welcome to name it whatever you wish, but remember the name, because you'll need it when you bind the application to the Eureka service.
+Here the application is given the name "greetingsvc" in Cloud Foundry. You are welcome to name it whatever you wish, but remember the name, because you'll need it when you bind the application to the Eureka service.
 
-By default, the domain name for the application is determined by the application name. By using `--random-route`, you're asking CloudFoundry to assign a random route. This will prevent domain name collisions with others who are working through this guide.
+By default, the domain name for the application is determined by the application name. By using `--random-route`, you're asking Cloud Foundry to assign a random route. This will prevent domain name collisions with others who are working through this guide.
 
 Next you'll create an instance of the Eureka service. The Eureka service is known as "p-service-registry" in the service marketplace and only offers a single service plan named "standard". Using the cf CLI, create an instance of the service named "registry":
 
@@ -96,7 +96,7 @@ cf restage greetingsvc
 
 Note that it's important to restage the application after binding the service so that the environment variables pertaining to the service binding are reflected in the application.
 
-At this point you have a simple "hello world" REST service deployed to CloudFoundry and bound to a Eureka service discovery instance. The REST service is enabled with a discovery client so that it will automatically register itself to the Eureka service. It is now eligible for discovery and consumption. Therefore, the next thing you'll do is create an application that discovers and consumes the "hello world" service.
+At this point you have a simple "hello world" REST service deployed to Cloud Foundry and bound to a Eureka service discovery instance. The REST service is enabled with a discovery client so that it will automatically register itself to the Eureka service. It is now eligible for discovery and consumption. Therefore, the next thing you'll do is create an application that discovers and consumes the "hello world" service.
 
 == Discover and consume the service
 
@@ -138,7 +138,7 @@ include::complete/greeting-client/pom.xml[lines=27..46]
 
 
 
-== Deploy the client to CloudFoundry
+== Deploy the client to Cloud Foundry
 
 First, build the client application:
 
@@ -146,7 +146,7 @@ First, build the client application:
 mvn package
 ```
 
-Then push the client application to CloudFoundry:
+Then push the client application to Cloud Foundry:
 
 ```sh
 cf push greetingclient -p target/gs-rest-client-0.1.0.jar --random-route
@@ -154,7 +154,7 @@ cf push greetingclient -p target/gs-rest-client-0.1.0.jar --random-route
 
 Here, the name of the application is "greetingclient". As with the service application, you can choose any application name you want.
 
-Again, the `--random-route` parameter tells CloudFoundry to generate a random domain route for your application. For the client application, you'll want to take note of the route it creates. Look for a line in the cf CLI output that looks like this:
+Again, the `--random-route` parameter tells Cloud Foundry to generate a random domain route for your application. For the client application, you'll want to take note of the route it creates. Look for a line in the cf CLI output that looks like this:
 
 ```
 Binding greetingclient-envious-intima.lion.wild.cf-app.com to greetingclient...
@@ -179,4 +179,4 @@ The response should be "Hello, World!".
 
 == Summary
 
-Congratulations! You have just registered a REST service with a Eureka server in CloudFoundry and written a client application that discovers and consumes that service.
+Congratulations! You have just registered a REST service with a Eureka server in Cloud Foundry and written a client application that discovers and consumes that service.
