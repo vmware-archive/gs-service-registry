@@ -20,7 +20,15 @@ include::https://raw.githubusercontent.com/pcf-guides/getting-started-macros/mas
 
 Starting with the "hello world" REST service from http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service], you'll start by enabling the service for service discovery.
 
-The first thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
+Modify the initial code to enable support for external configuration through the use of the Spring Cloud Pivotal Connector. Modify the Maven POM to replace the Spring Boot parent with the Spring Cloud parent.
+
+`pom.xml`
+[source,xml]
+----
+include::complete/pom.xml[tag=cloudparent]
+----
+
+The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
 
 `pom.xml`
 [source,xml]
