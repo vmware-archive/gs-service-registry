@@ -10,17 +10,17 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/hello")
 public class GreetingClientController {
 
-	private RestTemplate rest;
+    private RestTemplate rest;
 
     @Autowired
-	public GreetingClientController(RestTemplate rest) {
-		this.rest = rest;
-	}
+    public GreetingClientController(RestTemplate rest) {
+      this.rest = rest;
+    }
 
-        @RequestMapping(method=RequestMethod.GET)
-        public String hello() {
-			Greeting greeting = rest.getForObject("http://GreetingService/greeting", Greeting.class);
-        	return greeting.getContent();
-        }
-        
+    @RequestMapping(method=RequestMethod.GET)
+    public String hello() {
+      Greeting greeting = rest.getForObject("http://GreetingService/greeting", Greeting.class);
+      return greeting.getContent();
+    }
+
 }
