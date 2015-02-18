@@ -133,7 +133,7 @@ Finally, you'll need a build file with the required dependencies:
 `pom.xml`
 [source,xml]
 ----
-include::complete/greeting-client/pom.xml[lines=27..46]
+include::complete/greeting-client/pom.xml[tag=dependencies]
 ----
 
 
