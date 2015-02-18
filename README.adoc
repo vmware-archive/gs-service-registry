@@ -25,7 +25,7 @@ Modify the initial code to enable support for external configuration through the
 `pom.xml`
 [source,xml]
 ----
-include::complete/pom.xml[tag=cloudparent]
+include::complete/greeting-service/pom.xml[tag=cloudparent]
 ----
 
 The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
@@ -33,7 +33,7 @@ The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cl
 `pom.xml`
 [source,xml]
 ----
-include::complete/greeting-service/pom.xml[lines=27..46]
+include::complete/greeting-service/pom.xml[tag=dependencies]
 ----
 
 The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in Cloud Foundry.
