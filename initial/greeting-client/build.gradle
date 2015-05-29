@@ -8,25 +8,25 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "spring-boot"
 
 jar {
-    baseName = 'gs-rest-client'
-    version =  '0.1.0'
-}
-
-repositories {
-    maven { url "https://repo.spring.io/libs-snapshot/" }
-    mavenCentral()
+    baseName = "gs-rest-client"
+    version =  "0.1.0"
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
 }
 
+repositories {
+    maven { url "https://repo.spring.io/libs-milestone/" }
+    mavenCentral()
+}
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = "2.4"
 }

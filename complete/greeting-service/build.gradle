@@ -1,34 +1,47 @@
 buildscript {
     repositories {
+        maven { url "https://repo.spring.io/plugins-release/" }
         maven { url "https://repo.spring.io/libs-release/" }
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+        classpath("io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE")
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "spring-boot"
+apply plugin: "io.spring.dependency-management"
 
 jar {
-    baseName = 'gs-rest-service'
-    version =  '0.1.0'
+    baseName = "gs-rest-service"
+    version =  "0.1.0"
 }
 
-repositories {
-    maven { url "https://repo.spring.io/libs-snapshot/" }
-    mavenCentral()
+// override the managed versions of the Pivotal Cloud Connectors dependencies
+ext["spring-cloud-connectors.version"] = "1.2.0.RC1"
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:1.0.2.RELEASE"
+    }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.cloud:spring-cloud-starter-eureka:1.0.0.RELEASE")
-    compile("org.springframework.cloud:spring-cloud-pivotal-connector:1.0.0.BUILD-SNAPSHOT")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    compile("io.pivotal.spring.cloud:spring-cloud-pivotal-cloudfoundry-connector:1.0.0.M1")
+    compile("io.pivotal.spring.cloud:spring-cloud-pivotal-spring-connector:1.0.0.M1")
+}
+
+repositories {
+    maven { url "https://repo.spring.io/libs-milestone/" }
+    mavenCentral()
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = "2.4"
 }

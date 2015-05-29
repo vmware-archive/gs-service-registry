@@ -8,14 +8,18 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "spring-boot"
 
 jar {
-    baseName = 'gs-rest-service'
-    version =  '0.1.0'
+    baseName = "gs-rest-service"
+    version =  "0.1.0"
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
 }
 
 repositories {
@@ -23,10 +27,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-}
-
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = "2.4"
 }
