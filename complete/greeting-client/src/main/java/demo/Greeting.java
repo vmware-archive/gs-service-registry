@@ -1,4 +1,4 @@
-package hello;
+package demo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -40,10 +40,10 @@ The Spring Cloud Eureka starter adds the Eureka discovery client to the project 
 
 Next, you'll need to enable the discovery client by annotating `DemoApplication` with `@EnableDiscoveryClient`.
 
-`src/main/java/hello/DemoApplication.java`
+`src/main/java/demo/DemoApplication.java`
 [source,java]
 ----
-include::complete/greeting-service/src/main/java/hello/DemoApplication.java[]
+include::complete/greeting-service/src/main/java/demo/DemoApplication.java[]
 ----
 
 The `@EnableDiscoveryClient` annotation enables a Eureka discovery client that will register the "hello world" REST service with the bound Eureka service so that other applications can discover and consume it.
@@ -104,28 +104,28 @@ For the client of the "hello world" REST service, you'll build another REST serv
 
 The client service has the same `Greeting` resource representation class as the "hello world" service itself. The only key difference is that the constructor is annotated with `@JsonCreator` and its arguments with `@JsonProperty` so that it can be created from the results of invoking the "hello world" service:
 
-`src/main/java/hello/Greeting.java`
+`src/main/java/demo/Greeting.java`
 [source,java]
 ----
-include::complete/greeting-client/src/main/java/hello/Greeting.java[]
+include::complete/greeting-client/src/main/java/demo/Greeting.java[]
 ----
 
 The client's controller handles a GET request for "/hello" by making a GET request for the "hello world" service's "/greeting" endpoint and binding the result to a `Greeting` object. It then returns the `content` property in the response:
 
-`src/main/java/hello/GreetingClientController.java`
+`src/main/java/demo/GreetingClientController.java`
 [source,java]
 ----
-include::complete/greeting-client/src/main/java/hello/GreetingClientController.java[]
+include::complete/greeting-client/src/main/java/demo/GreetingClientController.java[]
 ----
 
 `GreetingClientController` is injected with a `RestTemplate` via the constructor. It uses the injected `RestTemplate` to consume the "hello world" service. What's significant to notice is that the URL given to `getForObject()` has a host name of "GreetingService"--the name that the "hello world" service is registered as in Eureka. In this way, the client doesn't need to know the actual URL of the "hello world" service and only references it by the name it is registered as in Eureka.
 
 The client application also includes a bootstrap class named `DemoApplication` that is identical to the same class in the "hello world" service application:
 
-`src/main/java/hello/DemoApplication.java`
+`src/main/java/demo/DemoApplication.java`
 [source,java]
 ----
-include::complete/greeting-client/src/main/java/hello/DemoApplication.java[]
+include::complete/greeting-client/src/main/java/demo/DemoApplication.java[]
 ----
 
 Finally, you'll need a build file with the required dependencies:
