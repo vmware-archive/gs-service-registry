@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework.demo</groupId>
-    <artifactId>greeting-service</artifactId>
+    <artifactId>gs-rest-service</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
-    <name>greeting-service</name>
-    <description>Demo project for Spring Cloud</description>
+    <name>demo</name>
+    <description>Demo project for Spring Boot</description>
 
     <!-- tag::cloudparent[] -->
     <parent>

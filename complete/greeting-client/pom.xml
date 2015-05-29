@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework.demo</groupId>
-    <artifactId>greeting-client</artifactId>
+    <artifactId>gs-rest-client</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
-    <name>greeting-client</name>
+    <name>demo</name>
     <description>Demo project for Spring Cloud</description>
 
     <parent>
