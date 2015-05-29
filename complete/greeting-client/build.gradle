@@ -33,7 +33,6 @@ dependencyManagement {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.cloud:spring-cloud-starter-eureka")
-    compile("com.netflix.ribbon:ribbon-httpclient")
     compile("io.pivotal.spring.cloud:spring-cloud-pivotal-cloudfoundry-connector:1.0.0.M1")
     compile("io.pivotal.spring.cloud:spring-cloud-pivotal-spring-connector:1.0.0.M1")
 }
