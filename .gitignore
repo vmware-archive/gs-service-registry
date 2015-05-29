@@ -1,15 +1,34 @@
+# Operating System Files
+
+*.DS_Store
+Thumbs.db
 *.sw?
 .#*
 *#
 *~
+
+# Build Artifacts
+
+.gradle/
+build/
+target/
+bin/
+dependency-reduced-pom.xml
+README.html
+
+# Eclipse Project Files
+
 .classpath
 .project
-.settings
-bin
-build
-target
-dependency-reduced-pom.xml
+.settings/
+
+# IntelliJ IDEA Files
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime
+
 *.sublime-*
-/scratch
-.gradle
-README.html
