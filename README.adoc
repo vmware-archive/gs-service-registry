@@ -20,7 +20,7 @@ include::https://raw.githubusercontent.com/pcf-guides/getting-started-macros/mas
 
 Starting with the "hello world" REST service from http://spring.io/guides/gs/rest-service/[Building a RESTful Web Service], you'll start by enabling the service for service discovery.
 
-Modify the initial code to enable support for external configuration through the use of the Spring Cloud Pivotal Connector. Modify the Maven POM to replace the Spring Boot parent with the Spring Cloud parent.
+Modify the initial code to enable support for external configuration through the use of the Spring Cloud Services starter. Modify the Maven POM to replace the Spring Boot parent with the Spring Cloud Services parent.
 
 `pom.xml`
 [source,xml]
@@ -28,7 +28,7 @@ Modify the initial code to enable support for external configuration through the
 include::complete/greeting-service/pom.xml[tag=cloudparent]
 ----
 
-The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cloud Pivotal connector dependencies to the build:
+The next thing to do is to add the Spring Cloud Services Service Registry starter to the build:
 
 `pom.xml`
 [source,xml]
@@ -36,7 +36,7 @@ The next thing to do is to add the Spring Cloud Eureka starter and the Spring Cl
 include::complete/greeting-service/pom.xml[tag=dependencies]
 ----
 
-The Spring Cloud Eureka starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The Spring Cloud Pivotal connector enables the application to connect to the Eureka server as a service that is bound to the application in Cloud Foundry.
+The Spring Cloud Services Service Registry starter adds the Eureka discovery client to the project so that the service can automatically register itself and periodically renew its registration with a Eureka server. The starter also adds the Spring Cloud Pivotal connector, which enables the application to connect to the Eureka server as a service that is bound to the application in Cloud Foundry.
 
 Next, you'll need to enable the discovery client by annotating `DemoApplication` with `@EnableDiscoveryClient`.
 
